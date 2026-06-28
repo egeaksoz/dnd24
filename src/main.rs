@@ -57,11 +57,11 @@ fn roll_dice(list_state: &mut ListState) -> u8 {
     let index: usize = list_state.selected().unwrap();
     let mut rnd = rand::rng();
     match index {
-        0 => rnd.random_range(1..4),
-        1 => rnd.random_range(1..6),
-        2 => rnd.random_range(1..8),
-        3 => rnd.random_range(1..10),
-        4 => rnd.random_range(1..20),
+        0 => rnd.random_range(1..5),
+        1 => rnd.random_range(1..7),
+        2 => rnd.random_range(1..9),
+        3 => rnd.random_range(1..11),
+        4 => rnd.random_range(1..21),
         _ => unreachable!(),
     }
 }
