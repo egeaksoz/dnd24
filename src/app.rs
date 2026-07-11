@@ -172,7 +172,7 @@ impl App {
         // Message area
         self.registry.update_message_area(main_layout[2]);
         let message_widget = Paragraph::new(self.message.clone())
-            .block(Block::default().borders(Borders::ALL).title("Status"))
+            .block(Block::default().borders(Borders::ALL))
             .alignment(Alignment::Center)
             .style(Style::default().fg(Gruvbox::Light3.into()));
         frame.render_widget(message_widget, main_layout[2]);

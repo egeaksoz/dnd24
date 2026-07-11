@@ -1,6 +1,6 @@
 use crate::{effect_registry::EffectRegistry, gruvbox::Gruvbox};
 use ratatui::{
-    layout::{Alignment, Rect},
+    layout::Rect,
     style::Style,
     widgets::{Block, Borders, Paragraph, Widget},
 };
@@ -63,10 +63,9 @@ impl Widget for Button {
             .block(
                 Block::default()
                     .borders(Borders::ALL)
-                    .title(format!("Button {}", self.id + 1))
                     .style(Style::default().fg(Gruvbox::Light4.into())),
             )
-            .alignment(Alignment::Center)
+            .centered()
             .style(Style::default().fg(Gruvbox::Light2.into()));
 
         button.render(area, buf);
