@@ -95,6 +95,10 @@ impl App {
                         }
                     }
                 }
+                MouseEventKind::Down(MouseButton::Right) => {
+                    self.registry.handle_event(&AppEvent::ClearMessage);
+                    self.message = String::from("Roll a dice");
+                }
                 MouseEventKind::Moved => {
                     let pos = (mouse.column, mouse.row);
                     for button in &mut self.buttons {
