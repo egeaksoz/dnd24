@@ -185,13 +185,14 @@ impl App {
         let help_text = vec![
             Line::from(vec![
                 Span::styled("Controls: ", Style::default().fg(Gruvbox::Blue.into())),
-                Span::raw("1/2/3/4/5/6 - Click buttons, "),
+                Span::raw("1/2/3/4/5/6 - Roll dice, "),
                 Span::raw("c - Clear message, "),
                 Span::raw("q/Esc - Quit"),
             ]),
             Line::from(vec![
                 Span::styled("Mouse: ", Style::default().fg(Gruvbox::Green.into())),
-                Span::raw("Click buttons, move to hover"),
+                Span::raw("Left-click - Roll dice, "),
+                Span::raw("Right-click - Clear"),
             ]),
         ];
 
