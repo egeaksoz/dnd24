@@ -18,7 +18,7 @@ pub struct App {
     buttons: [Button; 6],
     pub is_running: bool,
     message: String,
-    counter: u8,
+    dice: u8,
 }
 
 impl App {
@@ -34,8 +34,8 @@ impl App {
                 Button::new(5, "D20".to_string()),
             ],
             is_running: true,
-            message: "".to_string(),
-            counter: 1,
+            message: "Roll a dice".to_string(),
+            dice: 1,
         }
     }
 
@@ -82,10 +82,10 @@ impl App {
                             self.message = String::from("Roll a dice");
                         }
                         KeyCode::PageUp => {
-                            self.increment_counter();
+                            self.increment_dice();
                         }
                         KeyCode::PageDown => {
-                            self.decrement_counter();
+                            self.decrement_dice();
                         }
                         _ => {}
                     }
@@ -105,7 +105,7 @@ impl App {
                 }
                 MouseEventKind::Down(MouseButton::Right) => {
                     self.registry.handle_event(&AppEvent::ClearMessage);
-                    self.message = format!("Roll {} dice", self.counter);
+                    self.message = String::from("Roll a dice");
                 }
                 MouseEventKind::Moved => {
                     let pos = (mouse.column, mouse.row);
@@ -133,15 +133,15 @@ impl App {
         }
     }
 
-    fn increment_counter(&mut self) {
-        if let Some(res) = self.counter.checked_add(1) {
-            self.counter = res.min(10);
+    fn increment_dice(&mut self) {
+        if let Some(res) = self.dice.checked_add(1) {
+            self.dice = res.min(10);
         }
     }
 
-    fn decrement_counter(&mut self) {
-        if let Some(res) = self.counter.checked_sub(1) {
-            self.counter = res.max(1);
+    fn decrement_dice(&mut self) {
+        if let Some(res) = self.dice.checked_sub(1) {
+            self.dice = res.max(1);
         }
     }
 
@@ -194,19 +194,38 @@ impl App {
         }
 
         // Message area
-        self.registry.update_message_area(main_layout[2]);
-        self.message = format!("Roll {} dice", self.counter);
+        let message_area_layout = Layout::default()
+            .direction(Direction::Horizontal)
+            .constraints([
+                Constraint::Percentage(10),
+                Constraint::Percentage(80),
+                Constraint::Percentage(10),
+            ])
+            .split(main_layout[2]);
+        let dice_widget = Paragraph::new(format!("{}d", self.dice))
+            .block(Block::default().borders(Borders::ALL).title(" Dice "))
+            .alignment(Alignment::Center)
+            .style(Style::default().fg(Gruvbox::Light3.into()));
         let message_widget = Paragraph::new(self.message.clone())
             .block(Block::default().borders(Borders::ALL))
             .alignment(Alignment::Center)
             .style(Style::default().fg(Gruvbox::Light3.into()));
-        frame.render_widget(message_widget, main_layout[2]);
+        let result_widget = Paragraph::new("")
+            .block(Block::default().borders(Borders::ALL).title(" Result "))
+            .alignment(Alignment::Center)
+            .style(Style::default().fg(Gruvbox::Light3.into()));
+        self.registry.update_message_area(message_area_layout[1]);
+        frame.render_widget(dice_widget, message_area_layout[0]);
+        frame.render_widget(message_widget, message_area_layout[1]);
+        frame.render_widget(result_widget, message_area_layout[2]);
 
         // Help text
         let help_text = vec![
             Line::from(vec![
                 Span::styled("Controls: ", Style::default().fg(Gruvbox::Blue.into())),
                 Span::raw("1/2/3/4/5/6 - Roll dice, "),
+                Span::raw("Page Up - Increase dice, "),
+                Span::raw("Page Down - Decrease dice, "),
                 Span::raw("c - Clear message, "),
                 Span::raw("q/Esc - Quit"),
             ]),
