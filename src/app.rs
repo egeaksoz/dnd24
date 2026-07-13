@@ -48,32 +48,32 @@ impl App {
                         KeyCode::Char('1') => {
                             self.buttons[0].handle_click(&mut self.registry);
                             let dice = App::roll_dice(0);
-                            self.message = format!("Rolled: {}", dice);
+                            self.message = format!("Rolled 1d4: {}", dice);
                         }
                         KeyCode::Char('2') => {
                             self.buttons[1].handle_click(&mut self.registry);
                             let dice = App::roll_dice(1);
-                            self.message = format!("Rolled: {}", dice);
+                            self.message = format!("Rolled 1d6: {}", dice);
                         }
                         KeyCode::Char('3') => {
                             self.buttons[2].handle_click(&mut self.registry);
                             let dice = App::roll_dice(2);
-                            self.message = format!("Rolled: {}", dice);
+                            self.message = format!("Rolled 1d8: {}", dice);
                         }
                         KeyCode::Char('4') => {
                             self.buttons[3].handle_click(&mut self.registry);
                             let dice = App::roll_dice(3);
-                            self.message = format!("Rolled: {}", dice);
+                            self.message = format!("Rolled 1d10: {}", dice);
                         }
                         KeyCode::Char('5') => {
                             self.buttons[4].handle_click(&mut self.registry);
                             let dice = App::roll_dice(4);
-                            self.message = format!("Rolled: {}", dice);
+                            self.message = format!("Rolled 1d12: {}", dice);
                         }
                         KeyCode::Char('6') => {
                             self.buttons[5].handle_click(&mut self.registry);
                             let dice = App::roll_dice(5);
-                            self.message = format!("Rolled: {}", dice);
+                            self.message = format!("Rolled 1d20: {}", dice);
                         }
                         KeyCode::Char('c') => {
                             self.registry.handle_event(&AppEvent::ClearMessage);
