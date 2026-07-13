@@ -18,6 +18,7 @@ pub struct App {
     buttons: [Button; 6],
     pub is_running: bool,
     message: String,
+    counter: u8,
 }
 
 impl App {
@@ -33,7 +34,8 @@ impl App {
                 Button::new(5, "D20".to_string()),
             ],
             is_running: true,
-            message: "Roll a dice".to_string(),
+            message: "".to_string(),
+            counter: 1,
         }
     }
 
@@ -79,6 +81,12 @@ impl App {
                             self.registry.handle_event(&AppEvent::ClearMessage);
                             self.message = String::from("Roll a dice");
                         }
+                        KeyCode::PageUp => {
+                            self.increment_counter();
+                        }
+                        KeyCode::PageDown => {
+                            self.decrement_counter();
+                        }
                         _ => {}
                     }
                 }
@@ -97,7 +105,7 @@ impl App {
                 }
                 MouseEventKind::Down(MouseButton::Right) => {
                     self.registry.handle_event(&AppEvent::ClearMessage);
-                    self.message = String::from("Roll a dice");
+                    self.message = format!("Roll {} dice", self.counter);
                 }
                 MouseEventKind::Moved => {
                     let pos = (mouse.column, mouse.row);
@@ -122,6 +130,18 @@ impl App {
             4 => rnd.random_range(1..13),
             5 => rnd.random_range(1..21),
             _ => unreachable!(),
+        }
+    }
+
+    fn increment_counter(&mut self) {
+        if let Some(res) = self.counter.checked_add(1) {
+            self.counter = res.min(10);
+        }
+    }
+
+    fn decrement_counter(&mut self) {
+        if let Some(res) = self.counter.checked_sub(1) {
+            self.counter = res.max(1);
         }
     }
 
@@ -175,6 +195,7 @@ impl App {
 
         // Message area
         self.registry.update_message_area(main_layout[2]);
+        self.message = format!("Roll {} dice", self.counter);
         let message_widget = Paragraph::new(self.message.clone())
             .block(Block::default().borders(Borders::ALL))
             .alignment(Alignment::Center)
