@@ -158,11 +158,11 @@ impl App {
         let button_layout = Layout::default()
             .direction(Direction::Horizontal)
             .constraints([
-                Constraint::Percentage(16),
-                Constraint::Percentage(16),
-                Constraint::Percentage(16),
-                Constraint::Percentage(16),
-                Constraint::Percentage(16),
+                Constraint::Percentage(17),
+                Constraint::Percentage(17),
+                Constraint::Percentage(17),
+                Constraint::Percentage(17),
+                Constraint::Percentage(17),
                 Constraint::Percentage(17),
             ])
             .split(main_layout[1]);
