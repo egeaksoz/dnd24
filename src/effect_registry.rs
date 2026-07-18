@@ -123,7 +123,8 @@ impl EffectRegistry {
         let button_area = self.button_areas[button_id].clone();
 
         // Gentle hover effect
-        let hover_effect = fx::fade_to(Gruvbox::Blue, Gruvbox::Blue, Duration::from_millis(200));
+        let paint_effect = fx::paint(Gruvbox::Dark0Soft, Gruvbox::Blue, Duration::from_millis(200));
+        let hover_effect = fx::never_complete(paint_effect);
         let effect = dynamic_area(button_area, hover_effect);
         self.effects.add_unique_effect(effect_id, effect);
     }
@@ -146,7 +147,7 @@ impl EffectRegistry {
         let button_area = self.button_areas[button_id].clone();
 
         // Fade back to normal
-        let unhover_effect = fx::fade_to(Color::Reset, Color::Reset, Duration::from_millis(200));
+        let unhover_effect = fx::paint(Color::Reset, Color::Reset, Duration::from_millis(0));
         let effect = dynamic_area(button_area, unhover_effect);
         self.effects.add_unique_effect(effect_id, effect);
     }
