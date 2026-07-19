@@ -49,33 +49,45 @@ impl App {
                         }
                         KeyCode::Char('1') => {
                             self.buttons[0].handle_click(&mut self.registry);
-                            let dice = App::roll_dice(0);
-                            self.message = format!("Rolled 1d4: {}", dice);
+                            let total = self.handle_roll(0);
+                            let all_dice_text = self.join_result(&total);
+                            let res: &u8 = &total.iter().sum();
+                            self.message = format!("Rolled {}d4: {} => {}", self.dice, all_dice_text, res);
                         }
                         KeyCode::Char('2') => {
                             self.buttons[1].handle_click(&mut self.registry);
-                            let dice = App::roll_dice(1);
-                            self.message = format!("Rolled 1d6: {}", dice);
+                            let total = self.handle_roll(1);
+                            let all_dice_text = self.join_result(&total);
+                            let res: &u8 = &total.iter().sum();
+                            self.message = format!("Rolled {}d6: {} => {}", self.dice, all_dice_text, res);
                         }
                         KeyCode::Char('3') => {
                             self.buttons[2].handle_click(&mut self.registry);
-                            let dice = App::roll_dice(2);
-                            self.message = format!("Rolled 1d8: {}", dice);
+                            let total = self.handle_roll(2);
+                            let all_dice_text = self.join_result(&total);
+                            let res: &u8 = &total.iter().sum();
+                            self.message = format!("Rolled {}d8: {} => {}", self.dice, all_dice_text, res);
                         }
                         KeyCode::Char('4') => {
                             self.buttons[3].handle_click(&mut self.registry);
-                            let dice = App::roll_dice(3);
-                            self.message = format!("Rolled 1d10: {}", dice);
+                            let total = self.handle_roll(3);
+                            let all_dice_text = self.join_result(&total);
+                            let res: &u8 = &total.iter().sum();
+                            self.message = format!("Rolled {}d10: {} => {}", self.dice, all_dice_text, res);
                         }
                         KeyCode::Char('5') => {
                             self.buttons[4].handle_click(&mut self.registry);
-                            let dice = App::roll_dice(4);
-                            self.message = format!("Rolled 1d12: {}", dice);
+                            let total = self.handle_roll(4);
+                            let all_dice_text = self.join_result(&total);
+                            let res: &u8 = &total.iter().sum();
+                            self.message = format!("Rolled {}d12: {} => {}", self.dice, all_dice_text, res);
                         }
                         KeyCode::Char('6') => {
                             self.buttons[5].handle_click(&mut self.registry);
-                            let dice = App::roll_dice(5);
-                            self.message = format!("Rolled 1d20: {}", dice);
+                            let total = self.handle_roll(5);
+                            let all_dice_text = self.join_result(&total);
+                            let res: &u8 = &total.iter().sum();
+                            self.message = format!("Rolled {}d20: {} => {}", self.dice, all_dice_text, res);
                         }
                         KeyCode::Char('c') => {
                             self.registry.handle_event(&AppEvent::ClearMessage);
@@ -120,8 +132,29 @@ impl App {
         }
     }
 
+    fn handle_roll(&mut self, index: usize) -> Vec<u8> {
+        let mut v = Vec::new();
+        let mut i = 0;
+        while i < self.dice {
+            v.push(App::roll_dice(index));
+            i += 1;
+        }
+        v
+    }
+
+    fn join_result(&mut self, v: &Vec<u8>) -> String {
+        v.iter().enumerate().fold(String::new(), |mut acc, (i, n) | {
+            if i < (v.len() - 1) {
+                acc.push_str(&format!("{}+", n))
+            } else {
+                acc.push_str(&format!("{}", n));
+            }
+            acc
+        })
+    }
+
     fn roll_dice(index: usize) -> u8 {
-        let mut rnd = rand::rng();
+        let mut rnd = rand::rng();        
         match index {
             0 => rnd.random_range(1..5),
             1 => rnd.random_range(1..7),
