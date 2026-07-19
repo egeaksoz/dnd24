@@ -198,8 +198,7 @@ impl App {
             .direction(Direction::Horizontal)
             .constraints([
                 Constraint::Percentage(10),
-                Constraint::Percentage(80),
-                Constraint::Percentage(10),
+                Constraint::Percentage(90),
             ])
             .split(main_layout[2]);
         let dice_widget = Paragraph::new(format!("{}d", self.dice))
@@ -210,14 +209,9 @@ impl App {
             .block(Block::default().borders(Borders::ALL))
             .alignment(Alignment::Center)
             .style(Style::default().fg(Gruvbox::Light3.into()));
-        let result_widget = Paragraph::new("")
-            .block(Block::default().borders(Borders::ALL).title(" Result "))
-            .alignment(Alignment::Center)
-            .style(Style::default().fg(Gruvbox::Light3.into()));
         self.registry.update_message_area(message_area_layout[1]);
         frame.render_widget(dice_widget, message_area_layout[0]);
         frame.render_widget(message_widget, message_area_layout[1]);
-        frame.render_widget(result_widget, message_area_layout[2]);
 
         // Help text
         let help_text = vec![
