@@ -2,7 +2,7 @@ use crate::{button::AppEvent, gruvbox::Gruvbox};
 use ratatui::{layout::Rect, style::Color};
 use tachyonfx::{
     Duration, EffectManager, Motion, RefRect,
-    fx::{self, dynamic_area, parallel, sequence},
+    fx::{self, dynamic_area, sequence},
 };
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -78,27 +78,12 @@ impl EffectRegistry {
 
         let button_area = self.button_areas[button_id].clone();
 
-        // Create a dramatic click effect
         let click_effect = sequence(&[
-            // Flash bright
             fx::fade_to(
-                Gruvbox::YellowBright,
-                Gruvbox::YellowBright,
+                Gruvbox::Blue,
+                Gruvbox::Blue,
                 Duration::from_millis(100),
-            ),
-            // Pulse effect
-            parallel(&[
-                fx::fade_to(Gruvbox::Light0, Gruvbox::Light0, Duration::from_millis(150)),
-                fx::fade_to(
-                    Gruvbox::OrangeBright,
-                    Gruvbox::OrangeBright,
-                    Duration::from_millis(150),
-                ),
-            ]),
-            // Return to normal with slight glow
-            fx::fade_to(Gruvbox::Blue, Gruvbox::Blue, Duration::from_millis(200)),
-            // Fade to normal
-            fx::fade_to(Color::Reset, Color::Reset, Duration::from_millis(300)),
+            ),            
         ]);
 
         let effect = dynamic_area(button_area, click_effect);
